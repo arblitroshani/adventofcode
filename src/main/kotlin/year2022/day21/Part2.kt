@@ -3,18 +3,11 @@ package year2022.day21
 fun main() {
     val ip = InputParser().also(InputParser::parse)
 
-    // MARK: - Add offset
-    val humanValue = ip.completedTasks["humn"]!!
+    // MARK: - Remove humn so that it is not considered
     ip.completedTasks.remove("humn")
-    ip.completedTasks["humninit"] = humanValue
-    ip.incompleteTasks["humn"] = MonkeyTask(
-        firstMonkey = "humninit",
-        secondMonkey = "offset",
-        operation = MonkeyOperation.PLUS,
-    )
 
     // MARK: - Simplify
-    val tasksToComplete = mutableListOf("", "")
+    val tasksToComplete = mutableListOf("")
     while (tasksToComplete.isNotEmpty()) {
         tasksToComplete.clear()
         for ((monkeyName, task) in ip.incompleteTasks)
@@ -28,25 +21,23 @@ fun main() {
     // MARK: - Solve backwards
     var monkeyToCalculate = "root"
     while (ip.incompleteTasks.isNotEmpty()) {
-        val m1 = ip.incompleteTasks[monkeyToCalculate]!!.firstMonkey
-        val m2 = ip.incompleteTasks[monkeyToCalculate]!!.secondMonkey
-        val operation = ip.incompleteTasks[monkeyToCalculate]!!.operation
-        ip.incompleteTasks.remove(monkeyToCalculate)
-
-        val toCalcNext = if (ip.completedTasks[m1] == null) m1 else m2
-        val valueToUse = ip.completedTasks[m1] ?: ip.completedTasks[m2]!!
+        val m = ip.incompleteTasks[monkeyToCalculate]!!
+        val toCalcNext = if (ip.completedTasks[m.firstMonkey] == null) m.firstMonkey else m.secondMonkey
+        val valueToUse = ip.completedTasks[m.firstMonkey] ?: ip.completedTasks[m.secondMonkey]!!
 
         if (monkeyToCalculate == "root") {
             ip.completedTasks[toCalcNext] = valueToUse
         } else {
             val targetResult = ip.completedTasks[monkeyToCalculate]!!
-            ip.completedTasks[toCalcNext] = when (operation) {
+            ip.completedTasks[toCalcNext] = when (m.operation) {
                 MonkeyOperation.PLUS -> targetResult - valueToUse
-                MonkeyOperation.MINUS -> if (toCalcNext == m1) targetResult + valueToUse else valueToUse - targetResult
+                MonkeyOperation.MINUS -> valueToUse + if (toCalcNext == m.firstMonkey) targetResult else -targetResult
                 MonkeyOperation.MULT -> targetResult / valueToUse
-                MonkeyOperation.DIV -> if (toCalcNext == m1) targetResult * valueToUse else valueToUse / targetResult
+                MonkeyOperation.DIV -> valueToUse * if (toCalcNext == m.firstMonkey) targetResult else 1 / targetResult
             }
         }
+
+        ip.incompleteTasks.remove(monkeyToCalculate)
         monkeyToCalculate = toCalcNext
     }
 
