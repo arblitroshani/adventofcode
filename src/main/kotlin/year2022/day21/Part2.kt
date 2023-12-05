@@ -41,5 +41,5 @@ fun main() {
         monkeyToCalculate = toCalcNext
     }
 
-    println("Part2 solution: ${ip.completedTasks["humn"]!!}")
+    println("Part2 solution: ${ip.completedTasks["humn"]}")
 }
