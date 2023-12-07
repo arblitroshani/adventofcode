@@ -4,6 +4,7 @@ val memo = mutableMapOf<String, Int>()
 
 data class Hand(
     val cards: List<Int>,
+    val bid: Int,
 ): Comparable<Hand> {
 
     private val groups = cards.groupBy { it }.map { it.value.size }.sortedDescending()
@@ -28,7 +29,7 @@ data class Hand(
                     .map { c ->
                         val cards = cards.toMutableList()
                         cards[i] = c
-                        Hand(cards)
+                        Hand(cards, bid)
                     }
                     .maxOf(Hand::bestType)
             }
@@ -47,7 +48,7 @@ data class Hand(
     }
 
     companion object {
-        fun create(hand: String, isPart2: Boolean = false): Hand {
+        fun create(hand: String, bid: Int, isPart2: Boolean = false): Hand {
             val cards = hand.map {
                 if (it.isDigit()) return@map it.digitToInt()
                 when (it) {
@@ -59,7 +60,7 @@ data class Hand(
                     else -> 0
                 }
             }
-            return Hand(cards)
+            return Hand(cards, bid)
         }
     }
 }
