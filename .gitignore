@@ -61,3 +61,5 @@ outTmp/
 /kotlin-native/dist
 kotlin-ide/
 .kotlin/
+
+/src/main/resources/input/*
