@@ -6,29 +6,16 @@ data class Hand(
     val cards: List<Int>,
 ): Comparable<Hand> {
 
-    private val type: Int
+    private val groups = cards.groupBy { it }.map { it.value.size }.sortedDescending()
 
-    init {
-        val groupedCards = cards.groupBy { it }
-        val firstElementSize = groupedCards[cards[0]]?.size
-
-        val isFiveOfKind  = groupedCards.size == 1 && firstElementSize == 5
-        val isFourOfKind  = groupedCards.size == 2 && (firstElementSize == 1 || firstElementSize == 4)
-        val isFullHouse   = groupedCards.size == 2 && (firstElementSize == 2 || firstElementSize == 3)
-        val isThreeOfKind = groupedCards.maxOf { (_, v) -> v.size } == 3
-        val isTwoPair     = groupedCards.size == 3 && (firstElementSize == 2 || groupedCards[cards[1]]?.size == 2)
-        val isOnePair     = groupedCards.maxOf { (_, v) -> v.size } == 2
-        val highCard      = groupedCards.maxOf { (_, v) -> v.size } == 1
-
-        type = if (isFiveOfKind) 6
-        else if (isFourOfKind) 5
-        else if (isFullHouse) 4
-        else if (isThreeOfKind) 3
-        else if (isTwoPair) 2
-        else if (isOnePair) 1
-        else if (highCard) 0
-        else -1
-    }
+    private val type: Int =
+        if (groups.size == 1)               6 // five of a kind
+        else if (groups[0] == 4)            5 // four of a kind
+        else if (groups == listOf(3, 2))    4 // full house
+        else if (groups[0] == 3)            3 // three of a kind
+        else if (groups == listOf(2, 2, 1)) 2 // two pair
+        else if (groups[0] == 2)            1 // one pair
+        else                                0 // high card
 
     private fun bestType(): Int {
         val memoKey = cards.sorted().fold("") { acc, card -> acc + "${card}_" }
@@ -51,11 +38,11 @@ data class Hand(
     }
 
     override fun compareTo(other: Hand): Int {
-        if (this.bestType() > other.bestType()) return 1
-        if (this.bestType() < other.bestType()) return -1
+        if (bestType() > other.bestType()) return 1
+        if (bestType() < other.bestType()) return -1
         for (i in 0 .. 4)
-            if (this.cards[i] > other.cards[i]) return 1
-            else if (this.cards[i] < other.cards[i]) return -1
+            if (cards[i] > other.cards[i]) return 1
+            else if (cards[i] < other.cards[i]) return -1
         return 0
     }
 
