@@ -31,7 +31,7 @@ data class Hand(
     }
 
     private fun bestType(): Int {
-        val memoKey = cards.fold("") { acc, card -> acc + "${card}_" }
+        val memoKey = cards.sorted().fold("") { acc, card -> acc + "${card}_" }
         if (memo[memoKey] != null) return memo[memoKey]!!
 
         val bestType = cards
