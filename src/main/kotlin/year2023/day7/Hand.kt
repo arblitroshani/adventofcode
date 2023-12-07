@@ -8,6 +8,7 @@ data class Hand(
 ): Comparable<Hand> {
 
     private val groups = cards.groupBy { it }.map { it.value.size }.sortedDescending()
+    private val memoKey = cards.sorted().fold("") { acc, card -> acc + "${card}_" }
 
     private val type: Int =
         if (groups.size == 1)               6 // five of a kind
@@ -19,7 +20,6 @@ data class Hand(
         else                                0 // high card
 
     private fun bestType(): Int {
-        val memoKey = cards.sorted().fold("") { acc, card -> acc + "${card}_" }
         if (memo[memoKey] != null) return memo[memoKey]!!
 
         val bestType = cards
