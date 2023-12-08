@@ -38,6 +38,9 @@ fun stepsForPart1(
 
 fun stepsForPart2(instructions: List<Boolean>, elements: Map<String, String>): Long =
     elements.keys
-        .filter { it.endsWith("Al") || it.endsWith("Ar") }
-        .map { el -> stepsForPart1(instructions, elements, el.dropLast(1)) { it.endsWith('Z') } }
+        .asSequence()
+        .map { it.dropLast(1) }
+        .filter { it.endsWith('A') }
+        .distinct()
+        .map { el -> stepsForPart1(instructions, elements, el) { it.endsWith('Z') } }
         .fold(1, ::lcm)
