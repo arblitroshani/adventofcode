@@ -1,7 +1,8 @@
-package year2023.day8
+package com.arblitroshani.adventofcode.year2023
 
-import util.InputReader
-import util.lcm
+import com.arblitroshani.adventofcode.util.InputReader
+import com.arblitroshani.adventofcode.util.lcm
+import com.arblitroshani.adventofcode.util.print
 
 fun main() {
     val ip = InputReader(2023, 8).read()
@@ -14,8 +15,8 @@ fun main() {
         elements["${name}r"] = r
     }
 
-    println("Solution pt1: ${stepsForPart1(instructions, elements)}")
-    println("Solution pt2: ${stepsForPart2(instructions, elements)}")
+    stepsForPart1(instructions, elements).print()
+    stepsForPart2(instructions, elements).print()
 }
 
 fun stepsForPart1(

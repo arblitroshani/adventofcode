@@ -1,4 +1,7 @@
-package year2023.day7
+package com.arblitroshani.adventofcode.year2023
+
+import com.arblitroshani.adventofcode.util.InputReader
+import com.arblitroshani.adventofcode.util.print
 
 val memo = mutableMapOf<String, Int>()
 
@@ -64,3 +67,19 @@ data class Hand(
         }
     }
 }
+
+fun main() {
+    val ip = InputReader(2023, 7).read()
+
+    solve(ip).print()
+    solve(ip, true).print()
+}
+
+fun solve(input: List<String>, isPart2: Boolean = false): Int =
+    input
+        .map { line ->
+            val (hand, bid) = line.split(' ')
+            Hand.create(hand, bid.toInt(), isPart2)
+        }
+        .sorted()
+        .foldIndexed(0) { i, acc, hand -> acc + (i + 1) * hand.bid }

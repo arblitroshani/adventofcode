@@ -1,4 +1,4 @@
-package util
+package com.arblitroshani.adventofcode.util
 
 import java.io.File
 

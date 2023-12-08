@@ -1,4 +1,4 @@
-package util
+package com.arblitroshani.adventofcode.util
 
 fun gcd(a: Long, b: Long): Long {
     if (b == 0L) return a

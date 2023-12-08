@@ -1,9 +1,10 @@
-package year2023.day4
+package com.arblitroshani.adventofcode.year2023
 
-import java.io.File
+import com.arblitroshani.adventofcode.util.InputReader
+import com.arblitroshani.adventofcode.util.print
 
 fun main() {
-    val input = File("./src/main/kotlin/year2023/day4/input.txt").readLines()
+    val input = InputReader(2023, 4).read()
     val copies = Array(input.size) { 1 }
     val sumPt1 = input.mapIndexed { index, line ->
         line.split(":").last().trim()
@@ -14,5 +15,7 @@ fun main() {
                 1 shl ticketsWon - 1
             }
     }.sum()
-    println("pt1: $sumPt1, pt2: ${copies.sum()}")
+
+    sumPt1.print()
+    copies.sum().print()
 }
