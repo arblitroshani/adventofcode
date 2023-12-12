@@ -25,7 +25,7 @@ abstract class AocPuzzle<T> {
     init {
         val (folderName, fileName) = javaClass.kotlin.qualifiedName!!.split('.').takeLast(2)
         year = folderName.takeLast(4).toInt()
-        day = fileName.drop(3).toInt()
+        day = fileName.takeLast(2).toInt()
         inputReader = InputReader(year, day)
     }
 
