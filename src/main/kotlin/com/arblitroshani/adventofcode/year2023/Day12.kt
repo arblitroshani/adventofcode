@@ -35,11 +35,11 @@ private class Day12: AocPuzzle<Input23d12>() {
 
     fun calculateValidCombinations(record: Record, repetitions: Int): Long {
         memo.clear()
-        condition = record.condition.repeat(repetitions, '?')
-        return validCombinations(record.damagedSprings.repeat(repetitions, ',').toIntList(), 0)
+        condition = record.condition.repeat(repetitions, "?")
+        return validCombinations(record.damagedSprings.repeat(repetitions, ",").toIntList())
     }
 
-    private fun validCombinations(d: List<Int>, i: Int, lastIsHash: Boolean = false): Long {
+    private fun validCombinations(d: List<Int>, i: Int = 0, lastIsHash: Boolean = false): Long {
         if (i == condition.length) return if (d.isEmpty() || d.hasSingleZeroElement()) 1 else 0
         if (d.isEmpty()) return if (condition[i] == '#') 0 else validCombinations(d, i + 1)
         if (d[0] == 0)   return if (condition[i] == '#') 0 else validCombinations(d.drop(1), i + 1)
