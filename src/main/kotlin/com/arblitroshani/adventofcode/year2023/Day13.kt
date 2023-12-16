@@ -53,8 +53,8 @@ private data class Mirror(val l: Int, val r: Int, val t: Int, val b: Int) {
 
 private class Day13: AocPuzzle<Input23d13>() {
 
-    override fun parseInput(input: List<String>): Input23d13 =
-        input.fold(mutableListOf<MutableList<String>>()) { acc, line ->
+    override fun parseInput(puzzleInput: List<String>): Input23d13 =
+        puzzleInput.fold(mutableListOf<MutableList<String>>()) { acc, line ->
             if (line.isBlank()) {
                 acc.add(mutableListOf())
             } else {
@@ -64,9 +64,9 @@ private class Day13: AocPuzzle<Input23d13>() {
             acc
         }
 
-    override fun partOne(input: Input23d13): Int = input.sumOf { Mirror.firstValueFrom(it) }
+    override fun partOne(): Int = input.sumOf { Mirror.firstValueFrom(it) }
 
-    override fun partTwo(input: Input23d13): Int {
+    override fun partTwo(): Int {
         var sum = 0
         loop@ for (pattern in input) {
             val mutatedPattern = pattern.toMutableList()

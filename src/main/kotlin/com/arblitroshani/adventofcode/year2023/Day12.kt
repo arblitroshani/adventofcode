@@ -21,16 +21,16 @@ private class Day12: AocPuzzle<Input23d12>() {
     var condition: String = ""
     val memo = mutableMapOf<String, Long>()
 
-    override fun parseInput(input: List<String>): Input23d12 =
-        input.map { line ->
+    override fun parseInput(puzzleInput: List<String>): Input23d12 =
+        puzzleInput.map { line ->
             val (condition, dd) = line.split(' ')
             Record(condition, dd)
         }
 
-    override fun partOne(input: Input23d12): Long =
+    override fun partOne(): Long =
         input.sumOf { calculateValidCombinations(it, repetitions = 1) }
 
-    override fun partTwo(input: Input23d12): Long =
+    override fun partTwo(): Long =
         input.sumOf { calculateValidCombinations(it, repetitions = 5) }
 
     fun calculateValidCombinations(record: Record, repetitions: Int): Long {

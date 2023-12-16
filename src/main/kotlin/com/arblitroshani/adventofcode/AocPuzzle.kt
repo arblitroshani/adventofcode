@@ -16,11 +16,13 @@ import kotlin.time.measureTimedValue
  *  - `year` represents the advent-of-code year and is derived from the name of the enclosing folder.
  *  - `day` represents the day of the puzzle and is derived from the file name.
  */
-abstract class AocPuzzle<T> {
+abstract class AocPuzzle<T: Any> {
 
     private val year: Int
     private val day: Int
     private val inputReader: InputReader
+
+    lateinit var input: T
 
     init {
         val (folderName, fileName) = javaClass.kotlin.qualifiedName!!.split('.').takeLast(2)
@@ -39,26 +41,25 @@ abstract class AocPuzzle<T> {
         "=".repeat(if (day > 9) 20 else 19).print()
     }
 
-    abstract fun parseInput(input: List<String>): T
+    abstract fun parseInput(puzzleInput: List<String>): T
 
-    abstract fun partOne(input: T): Any
+    abstract fun partOne(): Any
 
-    abstract fun partTwo(input: T): Any
+    abstract fun partTwo(): Any
 
     private fun checkSample(
         expectedAnswerForSampleInP1: Any? = null,
         expectedAnswerForSampleInP2: Any? = null,
     ) {
-        val sampleInput = inputReader.readSample()
-        val sampleInputParsed = parseInput(sampleInput)
+        input = parseInput(inputReader.readSample())
         if (expectedAnswerForSampleInP1 != null) {
-            val myAnswer = partOne(sampleInputParsed)
+            val myAnswer = partOne()
             check(myAnswer == expectedAnswerForSampleInP1) {
                 "Sample solution for P1 is wrong! Got $myAnswer, expected $expectedAnswerForSampleInP1."
             }
         }
         if (expectedAnswerForSampleInP2 != null) {
-            val myAnswer = partTwo(sampleInputParsed)
+            val myAnswer = partTwo()
             check(myAnswer == expectedAnswerForSampleInP2) {
                 "Sample solution for P2 is wrong! Got $myAnswer, expected $expectedAnswerForSampleInP2!"
             }
@@ -66,10 +67,10 @@ abstract class AocPuzzle<T> {
     }
 
     private fun calculateAnswers() {
-        val input = inputReader.read()
-        val (parsedInput, parsingDuration) = measureTimedValue { parseInput(input) }
-        val partOne = measureTimedValue { partOne(parsedInput) }
-        val partTwo = measureTimedValue { partTwo(parsedInput) }
+        val (parsedInput, parsingDuration) = measureTimedValue { parseInput(inputReader.read()) }
+        input = parsedInput
+        val partOne = measureTimedValue { partOne() }
+        val partTwo = measureTimedValue { partTwo() }
         printAnswers(parsingDuration, partOne, partTwo)
     }
 

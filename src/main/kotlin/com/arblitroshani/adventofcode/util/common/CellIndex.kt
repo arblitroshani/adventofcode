@@ -10,3 +10,6 @@ data class CellIndex(val x: Int, val y: Int) {
 
     fun manhattanDistance(to: CellIndex) = abs(x - to.x) + abs(y - to.y)
 }
+
+operator fun <T> List<List<T>>.get(index: CellIndex): T { return this[index.x][index.y] }
+operator fun <T> List<MutableList<T>>.set(index: CellIndex, value: T) { this[index.x][index.y] = value }

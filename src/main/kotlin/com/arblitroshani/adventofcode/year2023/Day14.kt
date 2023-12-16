@@ -11,15 +11,15 @@ private typealias Input23d14 = MutableList<MutableList<Char>>
 
 private class Day14: AocPuzzle<Input23d14>() {
 
-    override fun parseInput(input: List<String>): Input23d14 =
-        input.map { it.toMutableList() }.toMutableList()
+    override fun parseInput(puzzleInput: List<String>): Input23d14 =
+        puzzleInput.map { it.toMutableList() }.toMutableList()
 
-    override fun partOne(input: Input23d14): Int {
+    override fun partOne(): Int {
         tiltVertically(up = true, input)
         return input.calculateLoad()
     }
 
-    override fun partTwo(input: Input23d14): Int {
+    override fun partTwo(): Int {
         val targetIterations = 1000000000L
         var iteration = 0L
         var cycleFound = false

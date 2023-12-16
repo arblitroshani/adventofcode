@@ -2,6 +2,7 @@ package com.arblitroshani.adventofcode.year2023
 
 import com.arblitroshani.adventofcode.AocPuzzle
 import com.arblitroshani.adventofcode.util.common.CellIndex
+import com.arblitroshani.adventofcode.util.common.get
 import kotlin.math.ceil
 
 fun main() = Day10().solve(
@@ -11,14 +12,12 @@ fun main() = Day10().solve(
 
 private typealias Input23d10 = List<List<Char>>
 
-operator fun Input23d10.get(index: CellIndex): Char { return this[index.x][index.y] }
-
 private class Day10: AocPuzzle<Input23d10>() {
 
     private val regexIntersections = Regex("(L-*7|F-*J|\\|)")
 
-    override fun parseInput(input: List<String>): Input23d10 {
-        val tiles = input
+    override fun parseInput(puzzleInput: List<String>): Input23d10 {
+        val tiles = puzzleInput
             .map(String::toMutableList)
             .map { line ->
                 line.also {
@@ -35,13 +34,11 @@ private class Day10: AocPuzzle<Input23d10>() {
         }
     }
 
-    override fun partOne(input: Input23d10): Int {
-        val loop = getLoop(input)
-        return ceil(loop.size / 2.0).toInt()
-    }
+    override fun partOne(): Int =
+        ceil(getLoop().size / 2.0).toInt()
 
-    override fun partTwo(input: Input23d10): Int {
-        val loop = getLoop(input)
+    override fun partTwo(): Int {
+        val loop = getLoop()
         val startCell = loop.last()
 
         val modifiedInput = input.mapIndexed { i, chars ->
@@ -61,7 +58,7 @@ private class Day10: AocPuzzle<Input23d10>() {
             }.sum()
     }
 
-    private fun getLoop(input: Input23d10): List<CellIndex> {
+    private fun getLoop(): List<CellIndex> {
         val targetX = input.indexOfFirst { it.contains('S') }
         val targetY = input[targetX].indexOf('S')
         val loopWithoutS = stepsToGoal(

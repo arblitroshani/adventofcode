@@ -11,13 +11,13 @@ private typealias Input23d15 = List<String>
 
 private class Day15: AocPuzzle<Input23d15>() {
 
-    override fun parseInput(input: List<String>): Input23d15 =
-        input.first().split(",")
+    override fun parseInput(puzzleInput: List<String>): Input23d15 =
+        puzzleInput.first().split(",")
 
-    override fun partOne(input: Input23d15): Int =
+    override fun partOne(): Int =
         input.sumOf(::hash)
 
-    override fun partTwo(input: Input23d15): Int {
+    override fun partTwo(): Int {
         data class Element(val name: String, var focalLength: Int)
 
         val slots = Array(256) { mutableListOf<Element>() }
@@ -46,9 +46,11 @@ private class Day15: AocPuzzle<Input23d15>() {
             }
         }
 
-        return slots.mapIndexed { i, slot ->
-            slot.mapIndexed { j, lens -> (i + 1) * (j + 1) * lens.focalLength }.sum()
-        }.sum()
+        return slots.withIndex().sumOf { (i, slot) ->
+            slot.withIndex().sumOf { (j, lens) ->
+                (i + 1) * (j + 1) * lens.focalLength
+            }
+        }
     }
 
     fun hash(s: String): Int {
