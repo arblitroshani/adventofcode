@@ -44,8 +44,10 @@ class Day16: AocPuzzle<Input23d16>() {
 
     private fun visitTile(prevIndex: CellIndex, d: Dir) {
         val i = prevIndex.next(d)
-        if (i.isOutsideBoundsOf(input) || memo["${i.memoKey}.$d"] == true) return
-        if (input[i] == '.') memo["${i.memoKey}.$d"] = true
+        val memoKey = "${i.memoKey}.$d"
+        if (i.isOutsideBoundsOf(input) || memo[memoKey] == true) return
+
+        memo[memoKey] = true
         visited[i] = true
 
         when (input[i]) {
