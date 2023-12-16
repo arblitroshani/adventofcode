@@ -41,7 +41,7 @@ abstract class AocPuzzle<T: Any> {
         "=".repeat(if (day > 9) 20 else 19).print()
     }
 
-    abstract fun parseInput(puzzleInput: List<String>): T
+    abstract fun parseInput(lines: List<String>): T
 
     abstract fun partOne(): Any
 
