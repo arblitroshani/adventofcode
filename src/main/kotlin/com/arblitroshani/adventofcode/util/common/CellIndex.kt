@@ -23,3 +23,13 @@ data class CellIndex(val x: Int, val y: Int) {
 
 operator fun <T> List<List<T>>.get(index: CellIndex): T { return this[index.x][index.y] }
 operator fun <T> List<MutableList<T>>.set(index: CellIndex, value: T) { this[index.x][index.y] = value }
+
+fun List<CellIndex>.areaOfPolygon(): Long {
+    var area = 0L
+    var j = size - 1
+    for (i in indices) {
+        area += (this[j].x + this[i].x).toLong() * (this[j].y - this[i].y).toLong()
+        j = i
+    }
+    return abs(area / 2)
+}
