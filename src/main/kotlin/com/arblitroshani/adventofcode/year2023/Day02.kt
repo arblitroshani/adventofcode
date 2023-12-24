@@ -1,7 +1,7 @@
 package com.arblitroshani.adventofcode.year2023
 
 import com.arblitroshani.adventofcode.util.InputReader
-import com.arblitroshani.adventofcode.util.print
+import com.arblitroshani.adventofcode.util.println
 
 fun main() {
     val input = InputReader(2023, 2).read()
@@ -15,8 +15,8 @@ fun main() {
         if (isGamePossible(game)) sumPt1 += (index + 1)
     }
 
-    sumPt1.print()
-    sumPt2.print()
+    sumPt1.println()
+    sumPt2.println()
 }
 
 fun isGamePossible(game: String): Boolean {

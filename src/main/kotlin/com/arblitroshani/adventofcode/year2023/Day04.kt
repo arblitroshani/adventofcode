@@ -1,7 +1,7 @@
 package com.arblitroshani.adventofcode.year2023
 
 import com.arblitroshani.adventofcode.util.InputReader
-import com.arblitroshani.adventofcode.util.print
+import com.arblitroshani.adventofcode.util.println
 
 fun main() {
     val input = InputReader(2023, 4).read()
@@ -16,6 +16,6 @@ fun main() {
             }
     }.sum()
 
-    sumPt1.print()
-    copies.sum().print()
+    sumPt1.println()
+    copies.sum().println()
 }

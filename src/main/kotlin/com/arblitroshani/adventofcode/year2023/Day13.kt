@@ -1,6 +1,7 @@
 package com.arblitroshani.adventofcode.year2023
 
 import com.arblitroshani.adventofcode.AocPuzzle
+import com.arblitroshani.adventofcode.util.InputParsing
 import com.arblitroshani.adventofcode.util.extension.columns
 
 fun main() = Day13().solve(
@@ -53,16 +54,8 @@ private data class Mirror(val l: Int, val r: Int, val t: Int, val b: Int) {
 
 private class Day13: AocPuzzle<Input23d13>() {
 
-    override fun parseInput(puzzleInput: List<String>): Input23d13 =
-        puzzleInput.fold(mutableListOf<MutableList<String>>()) { acc, line ->
-            if (line.isBlank()) {
-                acc.add(mutableListOf())
-            } else {
-                if (acc.isEmpty()) acc.add(mutableListOf())
-                acc.last().add(line)
-            }
-            acc
-        }
+    override fun parseInput(lines: List<String>): Input23d13 =
+        InputParsing.splitListByEmptyLines(lines)
 
     override fun partOne(): Int = input.sumOf { Mirror.firstValueFrom(it) }
 

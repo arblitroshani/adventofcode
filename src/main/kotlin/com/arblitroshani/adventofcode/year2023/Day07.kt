@@ -1,7 +1,7 @@
 package com.arblitroshani.adventofcode.year2023
 
 import com.arblitroshani.adventofcode.util.InputReader
-import com.arblitroshani.adventofcode.util.print
+import com.arblitroshani.adventofcode.util.println
 
 val memo = mutableMapOf<String, Int>()
 
@@ -71,8 +71,8 @@ data class Hand(
 fun main() {
     val ip = InputReader(2023, 7).read()
 
-    solve(ip).print()
-    solve(ip, true).print()
+    solve(ip).println()
+    solve(ip, true).println()
 }
 
 fun solve(input: List<String>, isPart2: Boolean = false): Int =

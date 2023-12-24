@@ -1,7 +1,7 @@
 package com.arblitroshani.adventofcode.year2022
 
 import com.arblitroshani.adventofcode.util.InputReader
-import com.arblitroshani.adventofcode.util.print
+import com.arblitroshani.adventofcode.util.println
 
 enum class MonkeyOperation(val value: String) {
     PLUS("+"),
@@ -59,7 +59,7 @@ fun main() {
             task.result(ip.completedTasks)?.let {
                 ip.completedTasks[monkeyName] = it
             }
-    ip.completedTasks["root"].print()
+    ip.completedTasks["root"].println()
 
     // Part 2
     ip.parse()
@@ -98,5 +98,5 @@ fun main() {
         monkeyToCalculate = toCalcNext
     }
 
-    ip.completedTasks["humn"].print()
+    ip.completedTasks["humn"].println()
 }

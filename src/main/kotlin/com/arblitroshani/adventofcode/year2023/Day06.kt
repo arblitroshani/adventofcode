@@ -1,7 +1,7 @@
 package com.arblitroshani.adventofcode.year2023
 
 import com.arblitroshani.adventofcode.util.InputReader
-import com.arblitroshani.adventofcode.util.print
+import com.arblitroshani.adventofcode.util.println
 
 data class Race(val duration: Long, val recordDistance: Long) {
     val numberOfWaysToWin =
@@ -20,13 +20,13 @@ fun main() {
         .mapIndexed { i, duration -> Race(duration, recordDistances[i]) }
         .map(Race::numberOfWaysToWin)
         .reduce(Int::times)
-        .print()
+        .println()
 
     // MARK: - Part 2
     Race(
         duration = extractNumberFromLine(line = input[0]),
         recordDistance = extractNumberFromLine(line = input[1]),
-    ).numberOfWaysToWin.print()
+    ).numberOfWaysToWin.println()
 }
 
 fun extractNumbersFromLine(line: String): List<Long> =

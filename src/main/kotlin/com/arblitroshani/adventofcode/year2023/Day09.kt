@@ -1,14 +1,14 @@
 package com.arblitroshani.adventofcode.year2023
 
 import com.arblitroshani.adventofcode.util.InputReader
-import com.arblitroshani.adventofcode.util.print
+import com.arblitroshani.adventofcode.util.println
 
 fun main() {
     val numberLines = InputReader(2023, 9).read()
         .map { it.split(" ").map(String::toInt) }
 
-    numberLines.sumOf { resolve(it) }.print()
-    numberLines.sumOf { resolve(it.reversed()) }.print()
+    numberLines.sumOf { resolve(it) }.println()
+    numberLines.sumOf { resolve(it.reversed()) }.println()
 }
 
 fun resolve(numbers: List<Int>): Int {

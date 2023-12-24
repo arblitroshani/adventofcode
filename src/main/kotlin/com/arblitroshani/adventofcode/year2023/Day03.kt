@@ -1,7 +1,7 @@
 package com.arblitroshani.adventofcode.year2023
 
 import com.arblitroshani.adventofcode.util.InputReader
-import com.arblitroshani.adventofcode.util.print
+import com.arblitroshani.adventofcode.util.println
 
 data class PartNumber(val row: Int, val startX: Int, val endX: Int, val value: Int) {
     fun overlapsRange(targetRow: Int, targetStart: Int, targetEnd: Int): Boolean =
@@ -28,7 +28,7 @@ fun main() {
         addNumberToPartNumbersIfSatisfiesConditions(currentNumber, index, currentPosition, input)
     }
 
-    partNumbers.sumOf(PartNumber::value).print()
+    partNumbers.sumOf(PartNumber::value).println()
 
     var totalGearRatios = 0
     input.forEachIndexed { index, line ->
@@ -45,7 +45,7 @@ fun main() {
             }
         }
     }
-    totalGearRatios.print()
+    totalGearRatios.println()
 }
 
 fun addNumberToPartNumbersIfSatisfiesConditions(

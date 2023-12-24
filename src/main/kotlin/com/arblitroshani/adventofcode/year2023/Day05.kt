@@ -5,7 +5,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 import com.arblitroshani.adventofcode.util.InputReader
-import com.arblitroshani.adventofcode.util.print
+import com.arblitroshani.adventofcode.util.println
 
 data class MapEntry(val destRangeStart: Long, val sourceRangeStart: Long, val rangeLength: Long) {
     companion object {
@@ -56,7 +56,7 @@ fun main() {
     ip.maps.forEach { map ->
         (0 until sources.size).forEach { sources[it] = getDestination(sources[it], map) }
     }
-    sources.min().print()
+    sources.min().println()
 
     runBlocking(Dispatchers.Default) {
         ip.seedRanges.map { r ->
@@ -69,7 +69,7 @@ fun main() {
                 }
                 smallestLocation
             }
-        }.awaitAll().min().print()
+        }.awaitAll().min().println()
     }
 }
 

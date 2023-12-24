@@ -1,12 +1,12 @@
 package com.arblitroshani.adventofcode.year2023
 
 import com.arblitroshani.adventofcode.util.InputReader
-import com.arblitroshani.adventofcode.util.print
+import com.arblitroshani.adventofcode.util.println
 
 fun main() {
     val input = InputReader(2023, 1).read()
-    firstPart(input).print()
-    secondPart(input).print()
+    firstPart(input).println()
+    secondPart(input).println()
 }
 
 fun firstPart(input: List<String>): Int =

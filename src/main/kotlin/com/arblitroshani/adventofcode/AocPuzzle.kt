@@ -1,7 +1,7 @@
 package com.arblitroshani.adventofcode
 
 import com.arblitroshani.adventofcode.util.InputReader
-import com.arblitroshani.adventofcode.util.print
+import com.arblitroshani.adventofcode.util.println
 import java.util.Locale
 import kotlin.time.Duration
 import kotlin.time.TimedValue
@@ -38,7 +38,7 @@ abstract class AocPuzzle<T: Any> {
         checkSample(expectedAnswerForSampleInP1, expectedAnswerForSampleInP2)
         println("\n=== DAY $day, $year ===")
         calculateAnswers()
-        "=".repeat(if (day > 9) 20 else 19).print()
+        "=".repeat(if (day > 9) 20 else 19).println()
     }
 
     abstract fun parseInput(lines: List<String>): T

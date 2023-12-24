@@ -1,6 +1,7 @@
 package com.arblitroshani.adventofcode.util
 
 import java.io.File
+import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.Locale
@@ -16,16 +17,14 @@ class InputReader(
         if (inputFile.exists()) return inputFile.readLines()
         inputFile.parentFile.mkdirs()
 
-        val url = URL("$mainUrlPath/input")
-        val sessionToken = File("src/main/resources/auth/cookie").readText()
-
-        return (url.openConnection() as HttpURLConnection)
+        return (URL("$mainUrlPath/input").openConnection() as HttpURLConnection)
             .apply {
+                val sessionToken = File("src/main/resources/auth/cookie").readText()
                 requestMethod = "GET"
                 setRequestProperty("Cookie", "session=$sessionToken")
             }
             .inputStream.reader()
-            .use { it.readLines() }
+            .use(InputStreamReader::readLines)
             .also { inputFile.writeText(it.joinToString("\n")) }
     }
 
@@ -34,17 +33,14 @@ class InputReader(
         if (sampleFile.exists()) return sampleFile.readLines()
         sampleFile.parentFile.mkdirs()
 
-        val url = URL(mainUrlPath)
-        val connection = (url.openConnection() as HttpURLConnection).apply {
-            requestMethod = "GET"
-        }
-
-        val rawHtmlContent = connection.inputStream.reader()
-            .use { it.readLines() }
+        val rawHtmlContent = (URL(mainUrlPath).openConnection() as HttpURLConnection)
+            .apply { requestMethod = "GET" }
+            .inputStream.reader()
+            .use(InputStreamReader::readLines)
             .joinToString("\n")
 
         return parseSample(rawHtmlContent)
-            .also { sampleFile.writeText(it) }
+            .also(sampleFile::writeText)
             .split("\n")
     }
 
