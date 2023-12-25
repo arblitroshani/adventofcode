@@ -68,3 +68,4 @@ src/notebooks/*.ipynb
 
 src/main/resources/*
 !src/main/resources/sample/
+!src/main/resources/extra/
