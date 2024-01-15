@@ -3,14 +3,8 @@ package com.arblitroshani.adventofcode.year2023
 import com.arblitroshani.adventofcode.AocPuzzle
 import com.arblitroshani.adventofcode.util.extension.decrementFirst
 import com.arblitroshani.adventofcode.util.extension.hasSingleZeroElement
-import com.arblitroshani.adventofcode.util.extension.memoKey
 import com.arblitroshani.adventofcode.util.extension.repeat
 import com.arblitroshani.adventofcode.util.extension.toIntList
-
-fun main() = Day12().solve(
-    expectedAnswerForSampleInP1 = 21L,
-    expectedAnswerForSampleInP2 = 525152L,
-)
 
 private data class Record(val condition: String, val damagedSprings: String)
 
@@ -19,10 +13,10 @@ private typealias Input23d12 = List<Record>
 private class Day12: AocPuzzle<Input23d12>() {
 
     var condition: String = ""
-    val memo = mutableMapOf<String, Long>()
+    val memo = mutableMapOf<Pair<Int, List<Int>>, Long>()
 
-    override fun parseInput(puzzleInput: List<String>): Input23d12 =
-        puzzleInput.map { line ->
+    override fun parseInput(lines: List<String>): Input23d12 =
+        lines.map { line ->
             val (condition, dd) = line.split(' ')
             Record(condition, dd)
         }
@@ -45,7 +39,7 @@ private class Day12: AocPuzzle<Input23d12>() {
         if (d[0] == 0)   return if (condition[i] == '#') 0 else validCombinations(d.drop(1), i + 1)
         if (condition[i] == '.') return if (lastIsHash)  0 else validCombinations(d, i + 1)
 
-        val key = "$i-${d.memoKey}"
+        val key = Pair(i, d)
         if (memo[key] == null) {
             val putHash = validCombinations(d.decrementFirst(), i + 1, true)
             val shouldPutDot = condition[i] != '#' && (!lastIsHash || d[0] == 0)
@@ -55,3 +49,8 @@ private class Day12: AocPuzzle<Input23d12>() {
         return memo[key]!!
     }
 }
+
+fun main() = Day12().solve(
+    expectedAnswerForSampleInP1 = 21L,
+    expectedAnswerForSampleInP2 = 525152L,
+)

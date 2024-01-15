@@ -5,19 +5,14 @@ import com.arblitroshani.adventofcode.util.common.CellIndex
 import com.arblitroshani.adventofcode.util.common.get
 import kotlin.math.ceil
 
-fun main() = Day10().solve(
-    expectedAnswerForSampleInP1 = null,
-    expectedAnswerForSampleInP2 = null,
-)
-
 private typealias Input23d10 = List<List<Char>>
 
 private class Day10: AocPuzzle<Input23d10>() {
 
     private val regexIntersections = Regex("(L-*7|F-*J|\\|)")
 
-    override fun parseInput(puzzleInput: List<String>): Input23d10 {
-        val tiles = puzzleInput
+    override fun parseInput(lines: List<String>): Input23d10 {
+        val tiles = lines
             .map(String::toMutableList)
             .map { line ->
                 line.also {
@@ -105,3 +100,5 @@ private class Day10: AocPuzzle<Input23d10>() {
         return steps
     }
 }
+
+fun main() = Day10().solve()

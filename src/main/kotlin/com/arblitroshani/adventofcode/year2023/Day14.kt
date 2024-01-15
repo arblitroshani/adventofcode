@@ -2,17 +2,12 @@ package com.arblitroshani.adventofcode.year2023
 
 import com.arblitroshani.adventofcode.AocPuzzle
 
-fun main() = Day14().solve(
-    expectedAnswerForSampleInP1 = 136,
-    expectedAnswerForSampleInP2 = 64,
-)
-
 private typealias Input23d14 = MutableList<MutableList<Char>>
 
 private class Day14: AocPuzzle<Input23d14>() {
 
-    override fun parseInput(puzzleInput: List<String>): Input23d14 =
-        puzzleInput.map { it.toMutableList() }.toMutableList()
+    override fun parseInput(lines: List<String>): Input23d14 =
+        lines.map { it.toMutableList() }.toMutableList()
 
     override fun partOne(): Int {
         tiltVertically(up = true, input)
@@ -93,3 +88,8 @@ private class Day14: AocPuzzle<Input23d14>() {
             }
         }
 }
+
+fun main() = Day14().solve(
+    expectedAnswerForSampleInP1 = 136,
+    expectedAnswerForSampleInP2 = 64,
+)

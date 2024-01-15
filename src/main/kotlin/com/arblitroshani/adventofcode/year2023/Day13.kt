@@ -4,11 +4,6 @@ import com.arblitroshani.adventofcode.AocPuzzle
 import com.arblitroshani.adventofcode.util.InputParsing
 import com.arblitroshani.adventofcode.util.extension.columns
 
-fun main() = Day13().solve(
-    expectedAnswerForSampleInP1 = 405,
-    expectedAnswerForSampleInP2 = 400,
-)
-
 private typealias Input23d13 = List<List<String>>
 
 private data class Mirror(val l: Int, val r: Int, val t: Int, val b: Int) {
@@ -80,3 +75,8 @@ private class Day13: AocPuzzle<Input23d13>() {
         return sum
     }
 }
+
+fun main() = Day13().solve(
+    expectedAnswerForSampleInP1 = 405,
+    expectedAnswerForSampleInP2 = 400,
+)

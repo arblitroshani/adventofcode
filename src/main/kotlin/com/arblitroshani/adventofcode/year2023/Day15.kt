@@ -2,17 +2,12 @@ package com.arblitroshani.adventofcode.year2023
 
 import com.arblitroshani.adventofcode.AocPuzzle
 
-fun main() = Day15().solve(
-    expectedAnswerForSampleInP1 = 1320,
-    expectedAnswerForSampleInP2 = 145,
-)
-
 private typealias Input23d15 = List<String>
 
 private class Day15: AocPuzzle<Input23d15>() {
 
-    override fun parseInput(puzzleInput: List<String>): Input23d15 =
-        puzzleInput.first().split(",")
+    override fun parseInput(lines: List<String>): Input23d15 =
+        lines.first().split(",")
 
     override fun partOne(): Int =
         input.sumOf(::hash)
@@ -63,3 +58,8 @@ private class Day15: AocPuzzle<Input23d15>() {
         return cv
     }
 }
+
+fun main() = Day15().solve(
+    expectedAnswerForSampleInP1 = 1320,
+    expectedAnswerForSampleInP2 = 145,
+)

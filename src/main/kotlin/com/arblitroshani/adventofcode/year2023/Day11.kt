@@ -5,17 +5,12 @@ import com.arblitroshani.adventofcode.util.common.CellIndex
 import kotlin.math.max
 import kotlin.math.min
 
-fun main() = Day11().solve(
-    expectedAnswerForSampleInP1 = 374L,
-    expectedAnswerForSampleInP2 = null,
-)
-
 private typealias Input23d11 = List<List<Char>>
 
 private class Day11: AocPuzzle<Input23d11>() {
 
-    override fun parseInput(puzzleInput: List<String>): Input23d11 =
-        puzzleInput.map(String::toMutableList).toMutableList()
+    override fun parseInput(lines: List<String>): Input23d11 =
+        lines.map(String::toMutableList).toMutableList()
 
     override fun partOne(): Long = countDistances(2)
 
@@ -50,3 +45,7 @@ private class Day11: AocPuzzle<Input23d11>() {
         return sum
     }
 }
+
+fun main() = Day11().solve(
+    expectedAnswerForSampleInP1 = 374L,
+)
