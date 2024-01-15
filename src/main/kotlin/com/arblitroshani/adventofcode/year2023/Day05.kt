@@ -1,40 +1,43 @@
 package com.arblitroshani.adventofcode.year2023
 
+import com.arblitroshani.adventofcode.AocPuzzle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
-import com.arblitroshani.adventofcode.util.InputReader
-import com.arblitroshani.adventofcode.util.println
 
-data class MapEntry(val destRangeStart: Long, val sourceRangeStart: Long, val rangeLength: Long) {
+data class SeedRange(
+    val seedStart: Long,
+    val numberOfSeeds: Long,
+)
+
+data class MapEntry(
+    val destRangeStart: Long,
+    val sourceRangeStart: Long,
+    val rangeLength: Long,
+) {
     companion object {
         fun from(line: String): MapEntry {
-            val (first, second, third) = line.split(" ").map(String::toLong)
+            val (first, second, third) = line.split(' ').map(String::toLong)
             return MapEntry(first, second, third)
         }
     }
 }
 
-data class SeedRange(val seedStart: Long, val numberOfSeeds: Long)
+data class Input23d05(
+    val seeds: List<Long>,
+    val seedRanges: List<SeedRange>,
+    val maps: MutableList<List<MapEntry>>,
+)
 
-class InputParser {
+class Day05: AocPuzzle<Input23d05>() {
 
-    private val input = InputReader(2023, 5).read()
-
-    var seeds: List<Long> = emptyList()
-    var seedRanges: List<SeedRange> = emptyList()
-    var maps: MutableList<List<MapEntry>> = mutableListOf()
-
-    fun parse() {
-        seeds = input[0]
-            .split(": ").last()
-            .split(' ')
-            .map(String::toLong)
+    override fun parseInput(lines: List<String>): Input23d05 {
+        val maps: MutableList<List<MapEntry>> = mutableListOf()
 
         val newMap: MutableList<MapEntry> = mutableListOf()
-        for (i in 1 until input.size) {
-            val line = input[i]
+        for (i in 1 until lines.size) {
+            val line = lines[i]
             if (line.isBlank() || line.isEmpty()) continue
             if (line.contains(':')) {
                 if (newMap.isNotEmpty()) maps.add(newMap.toList())
@@ -45,39 +48,49 @@ class InputParser {
         }
         maps.add(newMap)
 
-        seedRanges = seeds.chunked(2).map { SeedRange(it[0], it[1]) }
+        val seeds: List<Long> = lines[0]
+            .split(": ").last()
+            .split(' ')
+            .map(String::toLong)
+        val seedRanges = seeds.chunked(2).map { SeedRange(it[0], it[1]) }
+
+        return Input23d05(seeds, seedRanges, maps)
     }
-}
 
-fun main() {
-    val ip = InputParser().also(InputParser::parse)
-
-    val sources = ip.seeds.toMutableList()
-    ip.maps.forEach { map ->
-        (0 until sources.size).forEach { sources[it] = getDestination(sources[it], map) }
+    override fun partOne(): Long {
+        val sources = input.seeds.toMutableList()
+        input.maps.forEach { map ->
+            (0 until sources.size).forEach { sources[it] = getDestination(sources[it], map) }
+        }
+        return sources.min()
     }
-    sources.min().println()
 
-    runBlocking(Dispatchers.Default) {
-        ip.seedRanges.map { r ->
-            async {
-                var smallestLocation = Long.MAX_VALUE
-                for (startSeed in r.seedStart ..< r.seedStart + r.numberOfSeeds) {
-                    var source = startSeed
-                    ip.maps.forEach { source = getDestination(source, it) }
-                    smallestLocation = minOf(smallestLocation, source)
+    override fun partTwo(): Long =
+        runBlocking(Dispatchers.Default) {
+            input.seedRanges.map { r ->
+                async {
+                    var smallestLocation = Long.MAX_VALUE
+                    for (startSeed in r.seedStart ..< r.seedStart + r.numberOfSeeds) {
+                        var source = startSeed
+                        input.maps.forEach { source = getDestination(source, it) }
+                        smallestLocation = minOf(smallestLocation, source)
+                    }
+                    smallestLocation
                 }
-                smallestLocation
-            }
-        }.awaitAll().min().println()
+            }.awaitAll().min()
+        }
+
+    private fun getDestination(source: Long, map: List<MapEntry>): Long {
+        for (mapEntry in map) {
+            val sRangeStart = mapEntry.sourceRangeStart
+            val sRangeEnd = sRangeStart + mapEntry.rangeLength
+            if (source in sRangeStart ..< sRangeEnd) return mapEntry.destRangeStart + (source - sRangeStart)
+        }
+        return source
     }
 }
 
-fun getDestination(source: Long, map: List<MapEntry>): Long {
-    for (mapEntry in map) {
-        val sRangeStart = mapEntry.sourceRangeStart
-        val sRangeEnd = sRangeStart + mapEntry.rangeLength
-        if (source in sRangeStart ..< sRangeEnd) return mapEntry.destRangeStart + (source - sRangeStart)
-    }
-    return source
-}
+fun main() = Day05().solve(
+    expectedAnswerForSampleInP1 = 35L,
+    expectedAnswerForSampleInP2 = 46L,
+)
