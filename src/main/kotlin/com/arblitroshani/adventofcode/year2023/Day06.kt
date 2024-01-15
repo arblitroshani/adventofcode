@@ -1,7 +1,6 @@
 package com.arblitroshani.adventofcode.year2023
 
-import com.arblitroshani.adventofcode.util.InputReader
-import com.arblitroshani.adventofcode.util.println
+import com.arblitroshani.adventofcode.AocPuzzle
 
 data class Race(val duration: Long, val recordDistance: Long) {
     val numberOfWaysToWin =
@@ -10,37 +9,41 @@ data class Race(val duration: Long, val recordDistance: Long) {
             .count { it > recordDistance }
 }
 
-fun main() {
-    val input = InputReader(2023, 6).read()
+data class Input23d06(
+    val durations: List<Long>,
+    val recordDistances: List<Long>,
+)
 
-    // MARK: - Part 1
-    val durations = extractNumbersFromLine(line = input[0])
-    val recordDistances = extractNumbersFromLine(line = input[1])
-    durations
-        .mapIndexed { i, duration -> Race(duration, recordDistances[i]) }
-        .map(Race::numberOfWaysToWin)
-        .reduce(Int::times)
-        .println()
+class Day06: AocPuzzle<Input23d06>() {
 
-    // MARK: - Part 2
-    Race(
-        duration = extractNumberFromLine(line = input[0]),
-        recordDistance = extractNumberFromLine(line = input[1]),
-    ).numberOfWaysToWin.println()
+    override fun parseInput(lines: List<String>) = Input23d06(
+        durations = extractNumbersFromLine(line = lines[0]),
+        recordDistances = extractNumbersFromLine(line = lines[1]),
+    )
+
+    override fun partOne(): Int =
+        input.durations
+            .mapIndexed { i, duration -> Race(duration, input.recordDistances[i]) }
+            .map(Race::numberOfWaysToWin)
+            .reduce(Int::times)
+
+    override fun partTwo(): Int =
+        Race(
+            duration = input.durations.joinToString(separator = "").toLong(),
+            recordDistance = input.recordDistances.joinToString(separator = "").toLong(),
+        ).numberOfWaysToWin
+
+    private fun extractNumbersFromLine(line: String): List<Long> =
+        line
+            .substringAfter(':')
+            .trim()
+            .split(' ')
+            .filterNot(String::isEmpty)
+            .map(String::trim)
+            .map(String::toLong)
 }
 
-fun extractNumbersFromLine(line: String): List<Long> =
-    line
-        .substringAfter(':')
-        .trim()
-        .split(' ')
-        .filterNot(String::isEmpty)
-        .map(String::trim)
-        .map(String::toLong)
-
-fun extractNumberFromLine(line: String): Long =
-    line
-        .substringAfter(':')
-        .trim()
-        .filterNot { it == ' '}
-        .toLong()
+fun main() = Day06().solve(
+    expectedAnswerForSampleInP1 = 288,
+    expectedAnswerForSampleInP2 = 71503,
+)
