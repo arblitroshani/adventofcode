@@ -1,16 +1,14 @@
 package com.arblitroshani.adventofcode.year2023
 
-import com.arblitroshani.adventofcode.util.InputReader
-import com.arblitroshani.adventofcode.util.println
+import com.arblitroshani.adventofcode.AocPuzzle
 
-fun main() {
-    val input = InputReader(2023, 1).read()
-    firstPart(input).println()
-    secondPart(input).println()
-}
+typealias Input23d01 = List<String>
 
-fun firstPart(input: List<String>): Int =
-    input.sumOf { line ->
+class Day01: AocPuzzle<Input23d01>() {
+
+    override fun parseInput(lines: List<String>) = lines
+
+    override fun partOne(): Int = input.sumOf { line ->
         var digits = line.filter(Char::isDigit)
         if (digits.count() == 1) {
             digits = "$digits$digits"
@@ -20,19 +18,19 @@ fun firstPart(input: List<String>): Int =
         digits.toInt()
     }
 
-fun secondPart(input: List<String>): Int {
-    val spelledNumbers = listOf("one", "two", "three", "four", "five", "six", "seven", "eight", "nine")
-    return input.sumOf { line ->
-        val d1 = findFirstDigit(line, spelledNumbers)
-        val d2 = findFirstDigit(line.reversed(), spelledNumbers.map(String::reversed))
-        "$d1$d2".toInt()
+    override fun partTwo(): Int {
+        val spelledNumbers = listOf("one", "two", "three", "four", "five", "six", "seven", "eight", "nine")
+        return input.sumOf { line ->
+            val d1 = findFirstDigit(line, spelledNumbers)
+            val d2 = findFirstDigit(line.reversed(), spelledNumbers.map(String::reversed))
+            "$d1$d2".toInt()
+        }
     }
 }
 
 private fun findFirstDigit(line: String, spelledNumbers: List<String>): String {
     var digit = ""
     var index = 0
-
     while (digit.isEmpty()) {
         if (line[index].isDigit()) {
             digit = line[index].toString()
@@ -48,3 +46,7 @@ private fun findFirstDigit(line: String, spelledNumbers: List<String>): String {
     }
     return digit
 }
+
+fun main() = Day01().solve(
+    expectedAnswerForSampleInP1 = 142,
+)
