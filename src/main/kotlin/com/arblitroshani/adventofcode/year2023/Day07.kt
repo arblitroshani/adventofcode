@@ -1,7 +1,6 @@
 package com.arblitroshani.adventofcode.year2023
 
-import com.arblitroshani.adventofcode.util.InputReader
-import com.arblitroshani.adventofcode.util.println
+import com.arblitroshani.adventofcode.AocPuzzle
 
 val memo = mutableMapOf<String, Int>()
 
@@ -68,18 +67,29 @@ data class Hand(
     }
 }
 
-fun main() {
-    val ip = InputReader(2023, 7).read()
+typealias Input23d07 = List<String>
 
-    solve(ip).println()
-    solve(ip, true).println()
+class Day07: AocPuzzle<Input23d07>() {
+
+    override fun parseInput(lines: List<String>) = lines
+
+    override fun partOne(): Int =
+        solve(input, isPart2 = false)
+
+    override fun partTwo(): Int =
+        solve(input, isPart2 = true)
+
+    private fun solve(input: List<String>, isPart2: Boolean = false): Int =
+        input
+            .map { line ->
+                val (hand, bid) = line.split(' ')
+                Hand.create(hand, bid.toInt(), isPart2)
+            }
+            .sorted()
+            .foldIndexed(0) { i, acc, hand -> acc + (i + 1) * hand.bid }
 }
 
-fun solve(input: List<String>, isPart2: Boolean = false): Int =
-    input
-        .map { line ->
-            val (hand, bid) = line.split(' ')
-            Hand.create(hand, bid.toInt(), isPart2)
-        }
-        .sorted()
-        .foldIndexed(0) { i, acc, hand -> acc + (i + 1) * hand.bid }
+fun main() = Day07().solve(
+    expectedAnswerForSampleInP1 = 6440,
+    expectedAnswerForSampleInP2 = 5905,
+)
