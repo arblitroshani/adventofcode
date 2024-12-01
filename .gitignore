@@ -39,8 +39,8 @@ outTmp/
 kotlin-ide/
 .kotlin/
 
-src/notebooks/*.ipynb
+src/main/kotlin/com/arblitroshani/adventofcode/year*/day*/input.txt
+src/main/kotlin/com/arblitroshani/adventofcode/year*/day*/part*.txt
 
 src/main/resources/*
-!src/main/resources/sample/
 !src/main/resources/extra/
