@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.9.0"
+    kotlin("jvm") version "1.9.24"
     application
 }
 
@@ -11,19 +11,9 @@ repositories {
 }
 
 dependencies {
-    testImplementation(kotlin("test"))
-
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0-RC")
-}
-
-tasks.test {
-    useJUnitPlatform()
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
 }
 
 kotlin {
-    jvmToolchain(8)
-}
-
-application {
-    mainClass.set("MainKt")
+    jvmToolchain(17)
 }
