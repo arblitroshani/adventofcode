@@ -88,14 +88,13 @@ class Solution<T: Any>(private val day: Day) {
                     println(" ⇒ Expected: $verifiedSolution")
                 }
             }
+        } else {
             printYellow {
-                println("Measured time: ${duration.rounded()}")
+                println("Unverified solution: $result")
             }
-            return
         }
 
         printYellow {
-            println("Unverified solution: $result")
             println("Measured time: ${duration.rounded()}")
         }
     }

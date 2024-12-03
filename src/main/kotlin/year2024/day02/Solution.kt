@@ -2,14 +2,14 @@ package year2024.day02
 
 import framework.solution
 
-private typealias Input = List<List<Int>>
+private typealias Report = List<Int>
 
-fun main() = solution<Input>(2024, 2) {
+fun main() = solution<List<Report>>(2024, 2) {
 
-    fun isSafe(report: List<Int>): Boolean {
+    fun isSafe(report: Report): Boolean {
         val diffs = report
-            .drop(1)
-            .mapIndexed { i, level -> level - report[i] }
+            .windowed(2)
+            .map { (a, b) -> a - b }
         return diffs.all { it in 1..3 } || diffs.all { it in -3..-1 }
     }
 
@@ -23,7 +23,7 @@ fun main() = solution<Input>(2024, 2) {
 
     partTwo { input ->
         input.count { report ->
-            List(report.size) { i -> isSafe(report.toMutableList().also { it.removeAt(i) }) }
+            List(report.size) { i -> isSafe(report.toMutableList().apply { removeAt(i) }) }
                 .any { it }
         }
     }
