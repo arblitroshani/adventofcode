@@ -2,7 +2,7 @@ package year2024.day03
 
 import framework.solution
 
-fun main() = solution<String>(2024, 3) {
+fun main() = solution(2024, 3) {
 
     val mulPattern = "mul\\(\\d{1,3},\\d{1,3}\\)"
 
@@ -18,7 +18,7 @@ fun main() = solution<String>(2024, 3) {
     partOne { input ->
         Regex(mulPattern)
             .findAll(input)
-            .map { it.groupValues.first() }
+            .map(MatchResult::value)
             .sumOf(::performMultiplication)
     }
 
@@ -29,7 +29,7 @@ fun main() = solution<String>(2024, 3) {
 
         Regex("$mulPattern|$enablePattern|$disablePattern")
             .findAll(input)
-            .map { it.groupValues.first() }
+            .map(MatchResult::value)
             .filter {
                 if (it == "do()") {
                     isEnabled = true
