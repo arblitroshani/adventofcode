@@ -36,10 +36,11 @@ fun main() = solution<Input>(2024, 4) {
 
         input.indices.sumOf { r ->
             input[r].indices
-                .filter { input[r][it] == 'A' }
-                .map { CellIndex(r, it).diagonalNeighbors }
-                .count { dn ->
-                    dn.all { !it.isOutsideBoundsOf(input) } && dn.map { input[it] } in rotations
+                .map { CellIndex(r, it) }
+                .filter { input[it] == 'A' }
+                .map(CellIndex::diagonalNeighbors)
+                .count { dns ->
+                    dns.all { !it.isOutsideBoundsOf(input) } && dns.map(input::get) in rotations
                 }
         }
     }

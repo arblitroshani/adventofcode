@@ -54,10 +54,10 @@ data class CellIndex(val x: Int, val y: Int) {
             this.bottom -> Dir.U
             this.top -> Dir.D
             this.left -> Dir.R
-            this.topRight -> Dir.DR
+            this.topRight -> Dir.DL
             this.bottomRight -> Dir.UL
             this.bottomLeft -> Dir.UR
-            else -> Dir.DL
+            else -> Dir.DR
         }
     }
 
