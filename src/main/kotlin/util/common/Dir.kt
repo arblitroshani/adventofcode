@@ -1,7 +1,7 @@
 package util.common
 
 enum class Dir {
-    U, D, L, R;
+    U, D, L, R, UR, DR, DL, UL;
 
     val isVertical: Boolean get() = this == U || this == D
 
@@ -11,6 +11,10 @@ enum class Dir {
         D -> U
         L -> R
         R -> L
+        UR -> DL
+        DL -> UR
+        DR -> UL
+        UL -> DR
     }
 
     // turn clockwise 90 degrees
@@ -19,6 +23,10 @@ enum class Dir {
         R -> D
         D -> L
         L -> U
+        UR -> DR
+        DR -> DL
+        DL -> UL
+        UL -> UR
     }
 
     // turn counter-clockwise 90 degrees

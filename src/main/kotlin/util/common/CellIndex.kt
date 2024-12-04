@@ -8,6 +8,11 @@ data class CellIndex(val x: Int, val y: Int) {
     val bottom: CellIndex get() = CellIndex(x + 1, y)
     val left: CellIndex get() = CellIndex(x, y - 1)
 
+    val topRight: CellIndex get() = CellIndex(x - 1, y + 1)
+    val bottomRight: CellIndex get() = CellIndex(x + 1, y + 1)
+    val bottomLeft: CellIndex get() = CellIndex(x + 1, y - 1)
+    val topLeft: CellIndex get() = CellIndex(x - 1, y - 1)
+
     fun modularIndex(from: List<List<Any>>): CellIndex {
         var x = this.x
         var y = this.y
@@ -22,6 +27,7 @@ data class CellIndex(val x: Int, val y: Int) {
     }
 
     val neighbors: Set<CellIndex> get() = setOf(top, right, bottom, left)
+    val diagonalNeighbors: Set<CellIndex> get() = setOf(topRight, bottomRight, bottomLeft, topLeft)
 
     fun isOutsideBoundsOf(grid: List<List<Any>>): Boolean =
         x < 0 || y < 0 || x >= grid.size || y >= grid[0].size
@@ -34,6 +40,10 @@ data class CellIndex(val x: Int, val y: Int) {
         Dir.D -> bottom
         Dir.L -> left
         Dir.R -> right
+        Dir.UR -> topRight
+        Dir.DR -> bottomRight
+        Dir.DL -> bottomLeft
+        Dir.UL -> topLeft
     }
 
     fun manhattanDistance(to: CellIndex) = abs(x - to.x) + abs(y - to.y)
@@ -43,7 +53,11 @@ data class CellIndex(val x: Int, val y: Int) {
             this.right -> Dir.L
             this.bottom -> Dir.U
             this.top -> Dir.D
-            else -> Dir.R
+            this.left -> Dir.R
+            this.topRight -> Dir.DR
+            this.bottomRight -> Dir.UL
+            this.bottomLeft -> Dir.UR
+            else -> Dir.DL
         }
     }
 

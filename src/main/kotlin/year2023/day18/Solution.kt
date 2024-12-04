@@ -95,6 +95,7 @@ fun main() = solution<Input>(2023, 18) {
                     Dir.L -> currentIndex.copy(x = currentIndex.x - amount)
                     Dir.U -> currentIndex.copy(y = currentIndex.y + amount)
                     Dir.D -> currentIndex.copy(y = currentIndex.y - amount)
+                    else -> return@forEach
                 }
             }
 
