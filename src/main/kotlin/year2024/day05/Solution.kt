@@ -29,27 +29,24 @@ fun main() = solution<Input>(2024, 5) {
         )
     }
 
-    partOne { input ->
-        input.updates
-            .filter { it.isCorrect(input.rules) }
+    partOne { (rules, updates) ->
+        updates
+            .filter { it.isCorrect(rules) }
             .sumOf(Update::middle)
     }
 
-    partTwo { input ->
-        fun Update.swapping(i: Int, j: Int): Update = apply {
-            remove(i)
-            add(indexOf(j), i)
-        }
-
+    partTwo { (rules, updates) ->
         fun Update.fixed(): Update {
             val (i, j) = windowed(2)
                 .map { (a, b) -> b to a }
-                .firstOrNull(input.rules::contains) ?: return this
-            return swapping(i, j).fixed()
+                .firstOrNull(rules::contains) ?: return this
+            remove(i)
+            add(indexOf(j), i)
+            return fixed()
         }
 
-        input.updates
-            .filterNot { it.isCorrect(input.rules) }
+        updates
+            .filterNot { it.isCorrect(rules) }
             .map(Update::fixed)
             .sumOf(Update::middle)
     }
