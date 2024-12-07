@@ -6,15 +6,22 @@ private data class Equation(val testValue: Long, val nums: List<Long>)
 
 fun main() = solution<List<Equation>>(2024, 7) {
 
+    fun concatenate(n1: Long, n2: Long): Long {
+        if (n2 < 10) return n1 * 10 + n2
+        if (n2 < 100) return n1 * 100 + n2
+        if (n2 < 1000) return n1 * 1000 + n2
+        error("Add one more, $n1 $n2")
+    }
+
     fun Equation.canBeMadeTrue(useConcat: Boolean): Boolean =
         when (nums.size) {
-            0 -> testValue == 0L
-            1 -> testValue == nums.first()
+            1 -> testValue == nums[0]
             else -> listOfNotNull(
                 nums[0] + nums[1],
                 nums[0] * nums[1],
-                if (useConcat) "${nums[0]}${nums[1]}".toLong() else null
+                if (useConcat) concatenate(nums[0], nums[1]) else null
             )
+                .filter { it <= testValue }
                 .map { copy(nums = listOf(it) + nums.drop(2)) }
                 .any { it.canBeMadeTrue(useConcat) }
         }
