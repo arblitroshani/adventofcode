@@ -13,6 +13,9 @@ data class CellIndex(val x: Int, val y: Int) {
     val bottomLeft: CellIndex get() = CellIndex(x + 1, y - 1)
     val topLeft: CellIndex get() = CellIndex(x - 1, y - 1)
 
+    operator fun plus(other: CellIndex) = CellIndex(x + other.x, y + other.y)
+    operator fun minus(other: CellIndex) = CellIndex(x - other.x, y - other.y)
+
     fun modularIndex(from: List<List<Any>>): CellIndex {
         var x = this.x
         var y = this.y

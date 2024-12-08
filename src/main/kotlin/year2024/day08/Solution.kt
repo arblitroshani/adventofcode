@@ -24,17 +24,14 @@ fun main() = solution<Input>(2024, 8) {
         )
     }
 
-    fun interferenceCells(input: Input, limit: Int, countSelf: Boolean): Set<CellIndex> =
+    fun numberOfInterferenceCells(input: Input, limit: Int, countSelf: Boolean): Int =
         input.antennas
             .flatMap { it.value.getAllPairs() }
             .flatMap { (a, b) ->
-                val left = if (a.y < b.y) a else b
-                val right = if (left == a) b else a
-                val xDiff = left.x - right.x
-                val yDiff = left.y - right.y
+                val diff = a - b
                 listOf(
-                    generateSequence(left) { CellIndex(it.x + xDiff, it.y + yDiff) },
-                    generateSequence(right) { CellIndex(it.x - xDiff, it.y - yDiff) },
+                    generateSequence(a) { it + diff },
+                    generateSequence(b) { it - diff },
                 )
             }
             .flatMap { sequences ->
@@ -43,16 +40,15 @@ fun main() = solution<Input>(2024, 8) {
                     .drop(if (countSelf) 0 else 1)
                     .take(limit)
             }
-            .toSet()
+            .distinct()
+            .size
 
     partOne { input ->
-        interferenceCells(input, limit = 1, countSelf = false)
-            .size
+        numberOfInterferenceCells(input, limit = 1, countSelf = false)
     }
 
     partTwo { input ->
-        interferenceCells(input, limit = input.grid.size, countSelf = true)
-            .size
+        numberOfInterferenceCells(input, limit = input.grid.size, countSelf = true)
     }
 
     val mainTestInput = """
