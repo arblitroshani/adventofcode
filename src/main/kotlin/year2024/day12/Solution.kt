@@ -12,8 +12,7 @@ fun main() = solution(2024, 12) {
 
     fun countFencing(input: Input, perimeter: (Array<Array<Char>>, Char) -> Int): Int {
         val terrain = input.map { it.toTypedArray() }.toTypedArray()
-        var sum = 0
-
+        var totalFencingCost = 0
         while (true) {
             var next: Char? = null
             var nextIndex: CellIndex? = null
@@ -33,7 +32,7 @@ fun main() = solution(2024, 12) {
 
             val target = next.lowercaseChar()
             val surface = terrain.sumOf { line -> line.count { it == target }}
-            sum += surface * perimeter(terrain, target)
+            totalFencingCost += surface * perimeter(terrain, target)
 
             terrain.forEachIndexed { r, row ->
                 row.forEachIndexed { c, ch ->
@@ -41,7 +40,7 @@ fun main() = solution(2024, 12) {
                 }
             }
         }
-        return sum
+        return totalFencingCost
     }
 
     parseInput { lines ->
@@ -55,9 +54,8 @@ fun main() = solution(2024, 12) {
                 for (c in terrain[r].indices) {
                     val index = CellIndex(r, c)
                     if (terrain[index] != target) continue
-                    perimeter += 4 - index.neighbors
-                        .filter { it.isInsideBoundsOf(terrain) }
-                        .count { terrain[it] == target }
+                    perimeter += index.neighbors
+                        .count { it.isOutsideBoundsOf(terrain) ||  terrain[it] != target }
                 }
             }
             perimeter
@@ -67,17 +65,14 @@ fun main() = solution(2024, 12) {
     partTwo { input ->
         data class Line(val index: CellIndex, val dir: Dir)
 
-        fun countConsecutive(indices: List<Int>): Int {
-            val sortedIndices = indices.sorted()
-            return sortedIndices.mapIndexed { i, v ->
-                if (i == 0 || v != sortedIndices[i-1] + 1) 1 else 0
+        fun countConsecutive(indices: List<Int>): Int =
+            indices.mapIndexed { i, v ->
+                if (i == 0 || v != indices[i-1] + 1) 1 else 0
             }.sum()
-        }
 
         countFencing(input) { terrain, target ->
             val verticalSides = mutableListOf<Line>()
             val horizontalSides = mutableListOf<Line>()
-
             for (r in terrain.indices) {
                 for (c in terrain[r].indices) {
                     val index = CellIndex(r, c)
@@ -85,31 +80,32 @@ fun main() = solution(2024, 12) {
                     index.neighbors
                         .filter { it.isOutsideBoundsOf(terrain) || terrain[it] != target }
                         .forEach {
-                            if (it.x == index.x) {
-                                if (it.y < index.y) {
-                                    verticalSides.add(Line(CellIndex(it.x, index.y), Dir.L))
-                                } else {
-                                    verticalSides.add(Line(CellIndex(it.x, index.y + 1), Dir.R))
-                                }
-                            } else {
-                                if (it.x < index.x) {
-                                    horizontalSides.add(Line(CellIndex(index.x, it.y), Dir.U))
-                                } else {
-                                    horizontalSides.add(Line(CellIndex(index.x + 1, it.y), Dir.D))
-                                }
-                            }
+                            if (it.x == index.x)
+                                verticalSides.add(
+                                    Line(
+                                        index = CellIndex(it.x, index.y),
+                                        dir = if (it.y < index.y) Dir.L else Dir.R,
+                                    ),
+                                )
+                            else
+                                horizontalSides.add(
+                                    Line(
+                                        index = CellIndex(index.x, it.y),
+                                        dir = if (it.x < index.x) Dir.U else Dir.D,
+                                    ),
+                                )
                         }
                 }
             }
             val v = verticalSides
                 .groupBy { it.index.y to it.dir }
                 .map { (_, indices) -> indices.map { it.index.x } }
-                .sumOf(::countConsecutive)
             val h = horizontalSides
                 .groupBy { it.index.x to it.dir }
                 .map { (_, indices) -> indices.map { it.index.y } }
+            v.plus(h)
+                .map(List<Int>::sorted)
                 .sumOf(::countConsecutive)
-            v + h
         }
     }
 
