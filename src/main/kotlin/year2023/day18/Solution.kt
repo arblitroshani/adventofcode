@@ -3,32 +3,14 @@ package year2023.day18
 import framework.solution
 import util.common.CellIndex
 import util.common.Dir
+import util.common.algorithms.floodFill
 import util.common.areaOfPolygon
-import util.common.get
 import util.common.set
-import java.util.LinkedList
-import java.util.Queue
 
 private data class DigInstruction(val dir: Dir, val amount: Int, val color: String)
 private typealias Input = List<DigInstruction>
 
 fun main() = solution<Input>(2023, 18) {
-
-    fun floodFill(terrain: Array<Array<Boolean>>, index: CellIndex) {
-        val q: Queue<CellIndex> = LinkedList()
-        val visited = Array(terrain.size) { Array(terrain[0].size) { false } }
-        val color = terrain[index]
-        q.offer(index)
-        while (q.isNotEmpty()) {
-            val current = q.poll()
-            if (visited[current] || terrain[current] != color) { continue }
-            visited[current] = true
-            terrain[current] = true
-            current.neighbors
-                .filterNot { it.isOutsideBoundsOf(terrain) }
-                .forEach(q::add)
-        }
-    }
 
     parseInput { lines ->
         lines.map {  line ->
@@ -60,7 +42,7 @@ fun main() = solution<Input>(2023, 18) {
         val terrain = Array(height + 2) { Array(width + 2) { false } }
         translatedIndices.forEach { terrain[it.right.bottom] = true }
 
-        floodFill(terrain, CellIndex(0, 0))
+        floodFill(terrain, CellIndex(0, 0)) { true }
         translatedIndices.count() + terrain.flatten().count { !it }
     }
 

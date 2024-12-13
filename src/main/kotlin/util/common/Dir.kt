@@ -5,18 +5,6 @@ enum class Dir {
 
     val isVertical: Boolean get() = this == U || this == D
 
-    // turn 180 degrees
-    val opposite: Dir get() = when(this) {
-        U -> D
-        D -> U
-        L -> R
-        R -> L
-        UR -> DL
-        DL -> UR
-        DR -> UL
-        UL -> DR
-    }
-
     // turn clockwise 90 degrees
     val cw: Dir get() = when(this) {
         U -> R
@@ -30,5 +18,5 @@ enum class Dir {
     }
 
     // turn counter-clockwise 90 degrees
-    val ccw: Dir get() = this.cw.opposite
+    val ccw: Dir get() = this.cw.cw.cw
 }
