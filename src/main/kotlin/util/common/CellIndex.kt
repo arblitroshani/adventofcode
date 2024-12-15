@@ -71,12 +71,17 @@ data class CellIndex(val x: Int, val y: Int) {
     fun printable(): String = "[$x,$y]"
 }
 
-operator fun <T> List<List<T>>.get(index: CellIndex): T { return this[index.x][index.y] }
 operator fun <T> Array<Array<T>>.get(index: CellIndex): T { return this[index.x][index.y] }
-operator fun Array<CharArray>.get(index: CellIndex): Char { return this[index.x][index.y] }
-operator fun <T> List<MutableList<T>>.set(index: CellIndex, value: T) { this[index.x][index.y] = value }
 operator fun <T> Array<Array<T>>.set(index: CellIndex, value: T) { this[index.x][index.y] = value }
+
+operator fun Array<CharArray>.get(index: CellIndex): Char { return this[index.x][index.y] }
 operator fun Array<CharArray>.set(index: CellIndex, value: Char) { this[index.x][index.y] = value }
+
+operator fun List<CharArray>.get(index: CellIndex): Char { return this[index.x][index.y] }
+operator fun List<CharArray>.set(index: CellIndex, value: Char) { this[index.x][index.y] = value }
+
+operator fun <T> List<List<T>>.get(index: CellIndex): T { return this[index.x][index.y] }
+operator fun <T> List<MutableList<T>>.set(index: CellIndex, value: T) { this[index.x][index.y] = value }
 
 fun List<CellIndex>.printable(): String =
     fold("") { acc, e -> "$acc${e.printable()}, "}.dropLast(2)
