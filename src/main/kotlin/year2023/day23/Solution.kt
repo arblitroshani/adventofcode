@@ -3,7 +3,6 @@ package year2023.day23
 import framework.solution
 import util.common.CellIndex
 import util.common.Dir
-import util.common.GraphEdge
 import util.common.get
 import kotlin.math.min
 
@@ -37,6 +36,8 @@ fun main() = solution<Input>(2023, 23) {
     }
 
     partTwo { input ->
+        data class GraphEdge(val start: CellIndex, val end: CellIndex)
+
         val vertices = mutableSetOf<CellIndex>()
         val edges = mutableMapOf<GraphEdge, Int>()
         val adjacencyList = mutableMapOf<CellIndex, MutableSet<Pair<CellIndex, Int>>>()
@@ -77,11 +78,6 @@ fun main() = solution<Input>(2023, 23) {
                     longestPathToTarget(neighbor, visited.plus(i), actualCost + visitCost)
                 } ?: 0
         }
-
-        vertices.clear()
-        edges.clear()
-        adjacencyList.clear()
-        visitedVertices.clear()
 
         // step 1: build graph (edge list)
         buildGraph(start, Dir.D)

@@ -1,7 +1,7 @@
 package year2023.day25
 
 import framework.solution
-import util.common.UnionFind
+import util.common.algorithms.UnionFind
 import kotlin.math.max
 import kotlin.math.min
 
