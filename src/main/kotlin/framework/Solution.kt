@@ -46,9 +46,11 @@ class Solution<T: Any>(private val day: Day) {
     fun calculateAnswers() {
         val rawInputLines: List<String> = InputReader(day).read()
 
-        val inputForP1: T = inputParser(rawInputLines)
-        println("────────────── Part One ──────────────")
-        executePart(1, inputForP1, partOneSolver, partOneTest)
+        if (::partOneSolver.isInitialized) {
+            val inputForP1: T = inputParser(rawInputLines)
+            println("────────────── Part One ──────────────")
+            executePart(1, inputForP1, partOneSolver, partOneTest)
+        }
 
         if (::partTwoSolver.isInitialized) {
             val inputForP2: T = inputParser(rawInputLines)
