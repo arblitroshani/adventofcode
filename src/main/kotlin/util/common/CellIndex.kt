@@ -38,9 +38,14 @@ data class CellIndex(val x: Int, val y: Int) {
     fun <T> isOutsideBoundsOf(grid: Array<Array<T>>): Boolean =
         x < 0 || y < 0 || x >= grid.size || y >= grid[0].size
 
+    fun isOutsideBoundsOf(gridSize: Int): Boolean =
+        x < 0 || y < 0 || x >= gridSize || y >= gridSize
+
     fun <T> isInsideBoundsOf(grid: List<List<T>>): Boolean = !isOutsideBoundsOf(grid)
 
     fun <T> isInsideBoundsOf(grid: Array<Array<T>>): Boolean = !isOutsideBoundsOf(grid)
+
+    fun isInsideBoundsOf(gridSize: Int): Boolean = !isOutsideBoundsOf(gridSize)
 
     fun next(d: Dir): CellIndex = when (d) {
         Dir.U -> top
