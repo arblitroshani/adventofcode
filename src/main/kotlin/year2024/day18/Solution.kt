@@ -6,13 +6,13 @@ import util.common.algorithms.dijkstra
 
 fun main() = solution<List<CellIndex>>(2024, 18) {
 
-    fun solve(size: Int, corruptedCells: Set<CellIndex>): Int {
+    fun solve(size: Int, corrupted: Set<CellIndex>): Int {
         val target = CellIndex(size - 1, size - 1)
         val path = dijkstra(
             start = CellIndex(0, 0),
             adjacency = { node ->
                 node.neighbors
-                    .filter { it.isInsideBoundsOf(size) && it !in corruptedCells }
+                    .filter { it.isInsideBoundsOf(size) && it !in corrupted }
                     .map { it to 1 }
             },
             isGoal = { it == target },
@@ -20,35 +20,30 @@ fun main() = solution<List<CellIndex>>(2024, 18) {
         return path.size - 1
     }
 
-    fun firstByteToUnsolvable(size: Int, corruptedCells: List<CellIndex>): String {
+    fun firstByteToUnsolvable(size: Int, corrupted: List<CellIndex>): String {
         var startIndex = 0
-        var endIndex = corruptedCells.size
+        var endIndex = corrupted.size
         while (startIndex <= endIndex) {
             val guess = startIndex + (endIndex - startIndex) / 2
-            val a = solve(size, corruptedCells.take(guess - 1).toSet())
-            val b = solve(size, corruptedCells.take(guess).toSet())
-            if (a > 0 && b == -1) return corruptedCells[guess - 1].let { "${it.y},${it.x}" }
-            if (a > 0 && b > 0) startIndex = guess + 1 // picked too low
-            else if (a == -1 && b == -1) endIndex = guess - 1 // picked too high
+            val a = solve(size, corrupted.take(guess).toSet())
+            val b = solve(size, corrupted.take(guess + 1).toSet())
+            if (a > 0 && b == -1) return corrupted[guess].let { "${it.y},${it.x}" }
+            if (a > 0) startIndex = guess + 1 // too low
+            else endIndex = guess - 1 // too high
         }
-        return "No Answer"
+        error("No Answer")
     }
 
     parseInput { lines ->
         lines.map { line ->
             line.split(',')
                 .map(String::toInt)
-                .let { CellIndex(it[1], it[0]) }
+                .let { (c, r) -> CellIndex(r, c) }
         }
     }
 
-    partOne { corruptedCells ->
-        solve(71, corruptedCells.take(1024).toSet())
-    }
-
-    partTwo { corruptedCells ->
-        firstByteToUnsolvable(71, corruptedCells)
-    }
+    partOne { solve(71, it.take(1024).toSet()) }
+    partTwo { firstByteToUnsolvable(71, it) }
 
     val testInput = """
         5,4
