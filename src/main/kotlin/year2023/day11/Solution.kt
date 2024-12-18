@@ -27,10 +27,10 @@ fun main() = solution<Input>(2023, 11) {
         for (i in 0 .. galaxies.size)
             for (j in i + 1 ..< galaxies.size) {
                 val crossedEmptyLines = emptyRows.count {
-                    it in min(galaxies[i].x, galaxies[j].x) + 1 until max(galaxies[i].x, galaxies[j].x)
+                    it in min(galaxies[i].r, galaxies[j].r) + 1 until max(galaxies[i].r, galaxies[j].r)
                 }
                 val crossedEmptyCols = emptyCols.count {
-                    it in min(galaxies[i].y, galaxies[j].y) + 1 until max(galaxies[i].y, galaxies[j].y)
+                    it in min(galaxies[i].c, galaxies[j].c) + 1 until max(galaxies[i].c, galaxies[j].c)
                 }
                 sum += galaxies[i].manhattanDistance(to = galaxies[j])
                 sum += (expansion - 1) * (crossedEmptyLines + crossedEmptyCols)

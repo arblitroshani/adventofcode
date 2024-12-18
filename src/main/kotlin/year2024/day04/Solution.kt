@@ -3,12 +3,11 @@ package year2024.day04
 import framework.solution
 import util.common.CellIndex
 import util.common.Dir
+import util.common.get
 
 private typealias Input = List<List<Char>>
 
 fun main() = solution<Input>(2024, 4) {
-
-    operator fun Input.get(ci: CellIndex) = this[ci.x][ci.y]
 
     parseInput { lines ->
         lines.map(String::toList)

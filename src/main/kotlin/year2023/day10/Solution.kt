@@ -24,12 +24,12 @@ fun main() = solution<Input>(2023, 10) {
         while (current != target) {
             steps.add(current)
             current = when(input[current]) {
-                '7' -> if (prev.x == current.x) current.bottom else current.left
-                'J' -> if (prev.x == current.x) current.top else current.left
-                'L' -> if (prev.x == current.x) current.top else current.right
-                'F' -> if (prev.x == current.x) current.bottom else current.right
-                '|' -> if (prev.x < current.x) current.bottom else current.top
-                '-' -> if (prev.y < current.y) current.right else current.left
+                '7' -> if (prev.r == current.r) current.bottom else current.left
+                'J' -> if (prev.r == current.r) current.top else current.left
+                'L' -> if (prev.r == current.r) current.top else current.right
+                'F' -> if (prev.r == current.r) current.bottom else current.right
+                '|' -> if (prev.r < current.r) current.bottom else current.top
+                '-' -> if (prev.c < current.c) current.right else current.left
                 else -> CellIndex(-1, -1)
             }
             prev = steps.last()
@@ -53,9 +53,9 @@ fun main() = solution<Input>(2023, 10) {
 
     fun isInside(input: Input, index: CellIndex, loop: List<CellIndex>): Boolean {
         if (loop.contains(index)) return false
-        val stringToRight = (index.y + 1 ..< input[0].size).map {
-            val cell = input[index.x][it]
-            if (cell in "-|FJ7L" && !loop.contains(CellIndex(index.x, it))) "a" else cell
+        val stringToRight = (index.c + 1 ..< input[0].size).map {
+            val cell = input[index.r][it]
+            if (cell in "-|FJ7L" && !loop.contains(CellIndex(index.r, it))) "a" else cell
         }.joinToString(separator = "")
         return regexIntersections.findAll(stringToRight).count() % 2 == 1
     }
@@ -87,10 +87,10 @@ fun main() = solution<Input>(2023, 10) {
         val startCell = loop.last()
 
         val modifiedInput = input.mapIndexed { i, chars ->
-            if (i == startCell.x)
+            if (i == startCell.r)
                 chars.mapIndexed { j, char ->
                     // TODO: remove hardcoded L: replace S with appropriate connecting pipe
-                    if (j == startCell.y) 'L' else char
+                    if (j == startCell.c) 'L' else char
                 }
             else
                 chars

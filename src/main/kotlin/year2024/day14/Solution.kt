@@ -8,8 +8,8 @@ private data class Robot(val pos: CellIndex, val v: CellIndex)
 fun main() = solution<List<Robot>>(2024, 14) {
 
     fun Robot.futurePositionAfter(t: Int, w: Int, h: Int): CellIndex {
-        val futurePosRow = pos.x + t * (v.x + h)
-        val futurePosCol = pos.y + t * (v.y + w)
+        val futurePosRow = pos.r + t * (v.r + h)
+        val futurePosCol = pos.c + t * (v.c + w)
         return CellIndex(futurePosRow % h, futurePosCol % w)
     }
 
@@ -18,10 +18,10 @@ fun main() = solution<List<Robot>>(2024, 14) {
         robots
             .map { it.futurePositionAfter(100, w, h) }
             .forEach { fp ->
-                if (fp.x < h / 2 && fp.y < w / 2) quadrantCounters[0]++
-                if (fp.x < h / 2 && fp.y > w / 2) quadrantCounters[1]++
-                if (fp.x > h / 2 && fp.y < w / 2) quadrantCounters[2]++
-                if (fp.x > h / 2 && fp.y > w / 2) quadrantCounters[3]++
+                if (fp.r < h / 2 && fp.c < w / 2) quadrantCounters[0]++
+                if (fp.r < h / 2 && fp.c > w / 2) quadrantCounters[1]++
+                if (fp.r > h / 2 && fp.c < w / 2) quadrantCounters[2]++
+                if (fp.r > h / 2 && fp.c > w / 2) quadrantCounters[3]++
             }
         return quadrantCounters.fold(1) { acc, i -> acc * i }
     }
@@ -61,7 +61,7 @@ fun main() = solution<List<Robot>>(2024, 14) {
 
         val timesToMaxRobotsInLine = (0 until upperBound).map { t ->
             robotPositionsAfter(t)
-                .groupBy(CellIndex::x)
+                .groupBy(CellIndex::r)
                 .map { it.value.size }
                 .max() to t
         }

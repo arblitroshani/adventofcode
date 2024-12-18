@@ -80,29 +80,29 @@ fun main() = solution(2024, 12) {
                     index.neighbors
                         .filter { it.isOutsideBoundsOf(terrain) || terrain[it] != target }
                         .forEach {
-                            if (it.x == index.x)
+                            if (it.r == index.r)
                                 verticalSides.add(
                                     Line(
-                                        index = CellIndex(it.x, index.y),
-                                        dir = if (it.y < index.y) Dir.L else Dir.R,
+                                        index = CellIndex(it.r, index.c),
+                                        dir = if (it.c < index.c) Dir.L else Dir.R,
                                     ),
                                 )
                             else
                                 horizontalSides.add(
                                     Line(
-                                        index = CellIndex(index.x, it.y),
-                                        dir = if (it.x < index.x) Dir.U else Dir.D,
+                                        index = CellIndex(index.r, it.c),
+                                        dir = if (it.r < index.r) Dir.U else Dir.D,
                                     ),
                                 )
                         }
                 }
             }
             val v = verticalSides
-                .groupBy { it.index.y to it.dir }
-                .map { (_, indices) -> indices.map { it.index.x } }
+                .groupBy { it.index.c to it.dir }
+                .map { (_, indices) -> indices.map { it.index.r } }
             val h = horizontalSides
-                .groupBy { it.index.x to it.dir }
-                .map { (_, indices) -> indices.map { it.index.y } }
+                .groupBy { it.index.r to it.dir }
+                .map { (_, indices) -> indices.map { it.index.c } }
             v.plus(h)
                 .map(List<Int>::sorted)
                 .sumOf(::countConsecutive)

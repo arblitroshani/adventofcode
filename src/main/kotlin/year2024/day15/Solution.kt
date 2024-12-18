@@ -117,7 +117,7 @@ fun main() = solution<Input>(2024, 15) {
 
             if (!canShift(robotLocation, dir)) return
             val indexesToShift = indexesToShift(robotLocation, dir)
-            val indexGroups = indexesToShift.groupBy { it.x }.toList()
+            val indexGroups = indexesToShift.groupBy { it.r }.toList()
             val sortedIndexGroups =
                 if (dir == Dir.U) indexGroups.sortedBy { it.first }
                 else indexGroups.sortedByDescending { it.first }

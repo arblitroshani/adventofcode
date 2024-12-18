@@ -33,11 +33,11 @@ fun main() = solution<Input>(2023, 18) {
             }
         }
 
-        val minX = indices.minBy { it.x }.x
-        val minY = indices.minBy { it.y }.y
-        val translatedIndices = indices.map { CellIndex(it.x - minX, it.y - minY) }
-        val height = translatedIndices.maxBy { it.x }.x + 1
-        val width = translatedIndices.maxBy { it.y }.y + 1
+        val minX = indices.minBy { it.r }.r
+        val minY = indices.minBy { it.c }.c
+        val translatedIndices = indices.map { CellIndex(it.r - minX, it.c - minY) }
+        val height = translatedIndices.maxBy { it.r }.r + 1
+        val width = translatedIndices.maxBy { it.c }.c + 1
 
         val terrain = Array(height + 2) { Array(width + 2) { false } }
         translatedIndices.forEach { terrain[it.right.bottom] = true }
@@ -73,10 +73,10 @@ fun main() = solution<Input>(2023, 18) {
             .forEach { (dir, amount) ->
                 outlineVertices.add(currentIndex)
                 currentIndex = when (dir) {
-                    Dir.R -> currentIndex.copy(x = currentIndex.x + amount)
-                    Dir.L -> currentIndex.copy(x = currentIndex.x - amount)
-                    Dir.U -> currentIndex.copy(y = currentIndex.y + amount)
-                    Dir.D -> currentIndex.copy(y = currentIndex.y - amount)
+                    Dir.R -> currentIndex.copy(r = currentIndex.r + amount)
+                    Dir.L -> currentIndex.copy(r = currentIndex.r - amount)
+                    Dir.U -> currentIndex.copy(c = currentIndex.c + amount)
+                    Dir.D -> currentIndex.copy(c = currentIndex.c - amount)
                     else -> return@forEach
                 }
             }

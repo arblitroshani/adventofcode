@@ -27,7 +27,7 @@ fun main() = solution<List<CellIndex>>(2024, 18) {
             val guess = startIndex + (endIndex - startIndex) / 2
             val a = solve(size, corrupted.take(guess).toSet())
             val b = solve(size, corrupted.take(guess + 1).toSet())
-            if (a > 0 && b == -1) return corrupted[guess].let { "${it.y},${it.x}" }
+            if (a > 0 && b == -1) return corrupted[guess].let { "${it.c},${it.r}" }
             if (a > 0) startIndex = guess + 1 // too low
             else endIndex = guess - 1 // too high
         }
