@@ -1,23 +1,11 @@
 package year2024.day23
 
 import framework.solution
-import util.common.algorithms.bfs
 import util.common.algorithms.combinations
 
-private data class Input(val al: Map<String, Set<String>>)
+private data class Input(val al: Map<String, List<String>>)
 
 fun main() = solution<Input>(2024, 23) {
-
-    fun traverse(input: Input, onNodeVisited: (String, List<String>) -> Unit) =
-        bfs(
-            start = input.al.keys.first(),
-            adjacency = { node ->
-                val neighbors = input.al[node]?.toList() ?: emptyList()
-                onNodeVisited(node, neighbors)
-                neighbors
-            },
-            isGoal = { false }
-        )
 
     fun List<String>.areAllLinked(input: Input): Boolean =
         combinations(2).all { (a, b) -> input.al[a]?.contains(b) == true }
@@ -30,13 +18,13 @@ fun main() = solution<Input>(2024, 23) {
                 adjacencyList.getOrPut(a) { mutableSetOf() }.add(b)
                 adjacencyList.getOrPut(b) { mutableSetOf() }.add(a)
             }
-        Input(adjacencyList)
+        Input(adjacencyList.mapValues { it.value.toList() })
     }
 
     partOne { input ->
         val validTriples = mutableSetOf<List<String>>()
-        traverse(input) { node, neighbors ->
-            neighbors.combinations(2)
+        input.al.keys.forEach { node ->
+            input.al[node]!!.combinations(2)
                 .map { it + node }
                 .filter { it.any { el -> el.startsWith('t') } && it.areAllLinked(input) }
                 .forEach { validTriples.add(it.sorted()) }
@@ -46,7 +34,8 @@ fun main() = solution<Input>(2024, 23) {
 
     partTwo { input ->
         val largestSet = mutableListOf<String>()
-        traverse(input) { node, neighbors ->
+        input.al.keys.forEach { node ->
+            val neighbors = input.al[node]!!
             for (size in neighbors.size downTo largestSet.size) {
                 val connectedSet = neighbors
                     .combinations(size)
