@@ -31,6 +31,7 @@ data class CellIndex(val r: Int, val c: Int) {
 
     val neighbors: Set<CellIndex> get() = setOf(top, right, bottom, left)
     val diagonalNeighbors: Set<CellIndex> get() = setOf(topRight, bottomRight, bottomLeft, topLeft)
+    val allNeighbors: Set<CellIndex> get() = neighbors + diagonalNeighbors
 
     fun <T> isOutsideBoundsOf(grid: List<List<T>>): Boolean =
         r < 0 || c < 0 || r >= grid.size || c >= grid[0].size
