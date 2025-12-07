@@ -30,6 +30,7 @@ data class CellIndex(val r: Int, val c: Int) {
     }
 
     val neighbors: Set<CellIndex> get() = setOf(top, right, bottom, left)
+    val sideNeighbors: Set<CellIndex> get() = setOf(right, left)
     val diagonalNeighbors: Set<CellIndex> get() = setOf(topRight, bottomRight, bottomLeft, topLeft)
     val allNeighbors: Set<CellIndex> get() = neighbors + diagonalNeighbors
 
