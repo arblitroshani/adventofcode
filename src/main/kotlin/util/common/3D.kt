@@ -1,7 +1,8 @@
 package util.common
 
-import year2023.day24.Point3D
 import java.awt.geom.Point2D
+
+data class Point3D(val x: Long, val y: Long, val z: Long)
 
 data class Vector3D(
     val index: Point3D,

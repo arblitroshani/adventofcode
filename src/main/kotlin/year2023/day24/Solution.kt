@@ -1,10 +1,9 @@
 package year2023.day24
 
 import framework.solution
+import util.common.Point3D
 import util.common.Vector3D
 import util.extension.getAllPairs
-
-data class Point3D(val x: Long, val y: Long, val z: Long)
 
 private typealias Input = List<Vector3D>
 
