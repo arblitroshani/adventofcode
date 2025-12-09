@@ -26,13 +26,14 @@ fun main() = solution<List<CellIndex>>(2025, 9) {
     }
 
     partTwo { input ->
-        val verticalEdges = mutableSetOf<Pair<CellIndex, CellIndex>>()
-        val horizontalEdges = mutableSetOf<Pair<CellIndex, CellIndex>>()
-
-        fun addEdge(i1: CellIndex, i2: CellIndex) {
-            if (i1.r == i2.r) horizontalEdges.add(Pair(CellIndex(i1.r, min(i1.c, i2.c)), CellIndex(i1.r, max(i1.c, i2.c))))
-            if (i1.c == i2.c) verticalEdges.add(Pair(CellIndex(min(i1.r, i2.r), i1.c), CellIndex(max(i1.r, i2.r), i1.c)))
-        }
+        val edges = input
+            .plus(input.first())
+            .windowed(2)
+            .map { (i1, i2) ->
+                val start = CellIndex(min(i1.r, i2.r), min(i1.c, i2.c))
+                val end = CellIndex(max(i1.r, i2.r), max(i1.c, i2.c))
+                start to end
+            }
 
         fun isValidRectangle(i1: CellIndex, i2: CellIndex): Boolean {
             val left = min(i1.c, i2.c) + 1
@@ -40,21 +41,16 @@ fun main() = solution<List<CellIndex>>(2025, 9) {
             val top = min(i1.r, i2.r) + 1
             val bottom = max(i1.r, i2.r) - 1
 
-            // no intersections with vertical edges while going from left to right
-            val intersectsHorizontally = verticalEdges
-                .filter { it.first.c in left .. right }
-                .any { top in it.first.r .. it.second.r || bottom in it.first.r .. it.second.r }
-            if (intersectsHorizontally) return false
-
-            // no intersections with horizontal edges while going from top to bottom
-            val intersectsVertically = horizontalEdges
-                .filter { it.first.r in top .. bottom }
-                .any { left in it.first.c .. it.second.c || right in it.first.c .. it.second.c }
-            return !intersectsVertically
+            return !edges.any { (e1, e2) ->
+                val intersectsVerticalEdges = e1.c == e2.c &&
+                        e1.c in left .. right &&
+                        (top in e1.r .. e2.r || bottom in e1.r .. e2.r)
+                val intersectsHorizontalEdges = e1.r == e2.r &&
+                        e1.r in top .. bottom &&
+                        (left in e1.c .. e2.c || right in e1.c .. e2.c)
+                intersectsVerticalEdges || intersectsHorizontalEdges
+            }
         }
-
-        input.plus(input.first())
-            .windowed(2) { (i1, i2) -> addEdge(i1, i2) }
 
         input.getAllPairs()
             .filter { (i1, i2) -> isValidRectangle(i1, i2) }
